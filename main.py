@@ -1,13 +1,10 @@
 from fastapi import FastAPI
+from routers import test_router
 
 app = FastAPI()
 
-@app.post("/")
-def home():
+app.include_router(test_router.router)
 
-    context = {
-        'name': 'Krishna Regmi',
-        'course': 'Computer Science'
-    }
-
-    return context
+@app.get("/")
+def root():
+    return {"message": "FastAPI is working!"}
