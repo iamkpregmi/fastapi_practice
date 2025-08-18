@@ -33,3 +33,9 @@ def read_test(test_id: int, db: Session = Depends(get_db)):
     if db_test is None:
         raise HTTPException(status_code=404, detail="Test not found")
     return db_test
+
+
+@router.delete("/delete/{test_id}")
+def delete_test(test_id: int, db: Session = Depends(get_db)):
+    return crud.delete_test(test_id, db)    
+
