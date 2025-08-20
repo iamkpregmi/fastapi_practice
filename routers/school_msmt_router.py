@@ -33,3 +33,8 @@ def get_school_list(request: schema.SchoolDetails, db: Session = Depends(get_db)
 @router.post("/get-school-list-by-id")
 def get_school_list_by_id(request: schema.SchoolDetailsId, db: Session = Depends(get_db)):
     return crud.get_school_list_by_id(request, db)
+
+
+@router.post("/school-dashboard")
+def school_dashboard(db: Session = Depends(get_db)):
+    return crud.school_dashboard(db)

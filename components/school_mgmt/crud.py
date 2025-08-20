@@ -1,6 +1,8 @@
 from sqlalchemy.orm import Session
 from models.models import School, Student, Library
 from components.test_component import schema
+from sqlalchemy import func
+
 
 def get_student_details(school_id, db):
     students = db.query(
@@ -70,3 +72,28 @@ def get_school_list_by_id(request, db):
     ]
 
     return {'data': data_list}
+
+
+def school_dashboard(db):
+    studet_data = db.query(
+        Student.course,
+        Student.gender,
+        func.sum(Student.fee).label('total_fee'),
+        func.avg(Student.fee).label('avg_fee')
+    ).group_by(
+        Student.gender,
+        Student.course
+    ).order_by(
+        Student.course
+    ).all()
+
+    data_list = [
+        {
+        "course": stu.course,
+        "gender": stu.gender,
+        "total_fee": stu.total_fee,
+        "avg_fee": stu.avg_fee
+    } for stu in studet_data]
+
+    return {'data': data_list}
+
