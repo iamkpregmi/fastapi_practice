@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from models.models import School, Student, Library, StudentMarks
+from models.models import School, Student, Library, StudentMarks, VehicleEntry
 from components.test_component import schema
 from sqlalchemy import func, desc
 
@@ -238,3 +238,7 @@ def student_result(db):
 
     return {'Top 10 Students': result}
 
+
+
+def vehicle_details(db):
+    return {'data': 'hello world'}

@@ -15,3 +15,7 @@ class StudentResultSchema(BaseModel):
     student_id: int
     
 
+class VehicleInfoSchema(BaseModel):
+    time_period: str = 'Daily'  # 'Daily', 'Weekly', 'Monthly', 'Yearly'
+    from_date: date
+    to_date: date

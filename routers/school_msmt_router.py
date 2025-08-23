@@ -48,3 +48,7 @@ def student_result_by_id(request: schema.StudentResultSchema ,db: Session = Depe
 @router.post("/student-result")
 def student_result(db: Session = Depends(get_db)):
     return crud.student_result(db)
+
+@router.post("/vehicle-details")
+def vehicle_details(db: Session = Depends(get_db)):
+    return crud.vehicle_details(db)
