@@ -38,3 +38,13 @@ def get_school_list_by_id(request: schema.SchoolDetailsId, db: Session = Depends
 @router.post("/school-dashboard")
 def school_dashboard(db: Session = Depends(get_db)):
     return crud.school_dashboard(db)
+
+
+@router.post("/student-result-by-id")
+def student_result_by_id(request: schema.StudentResultSchema ,db: Session = Depends(get_db)):
+    return crud.student_result_by_id(request, db)
+
+
+@router.post("/student-result")
+def student_result(db: Session = Depends(get_db)):
+    return crud.student_result(db)

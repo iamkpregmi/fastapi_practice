@@ -9,3 +9,9 @@ class SchoolDetails(BaseModel):
 
 class SchoolDetailsId(BaseModel):
     school_id: List[int]
+
+
+class StudentResultSchema(BaseModel):
+    student_id: int
+    
+

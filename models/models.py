@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, ForeignKey, Date, Float, Enum
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, validates
 from database import Base
 import enum
 
@@ -55,6 +55,28 @@ class Student(Base):
 
     school_id = Column(Integer, ForeignKey("schools.id"))
     school = relationship("School", back_populates="students")
+    marks = relationship("StudentMarks", back_populates="student", cascade="all, delete-orphan")
+
+
+# ---------- StudentMarks MODEL ----------
+class StudentMarks(Base):
+    __tablename__ = "student_marks"
+
+    id = Column(Integer, primary_key=True, index=True)
+
+    student_id = Column(Integer, ForeignKey("students.id"), nullable=False)
+    subject = Column(String, nullable=False)
+    marks_obtained = Column(Float, nullable=False)
+    max_marks = Column(Float, nullable=False, default=100)
+
+    student = relationship("Student", back_populates="marks")
+
+    @validates('marks_obtained')
+    def validate_marks(self, value):
+        if value > self.max_marks:
+            raise ValueError(f"Marks obtained ({value}) cannot be greater than max_marks ({self.max_marks})")
+        return value
+
 
 
 # ---------- LIBRARY MODEL ----------
