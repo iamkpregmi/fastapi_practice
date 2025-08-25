@@ -1,7 +1,8 @@
 from sqlalchemy.orm import Session
-from models.models import School, Student, Library, StudentMarks, VehicleEntry
+from models.models import School, Student, Library, StudentMarks, VehicleEntry, Company, Employee
 from components.test_component import schema
 from sqlalchemy import func, desc
+from components.helper.helper_functions import serialize_data
 
 
 def get_student_details(school_id, db):
@@ -242,3 +243,44 @@ def student_result(db):
 
 def vehicle_details(db):
     return {'data': 'hello world'}
+
+
+#Sub query Practice
+def practice(request, db):
+    # sub_query = db.query(
+    #     func.avg(VehicleEntry.empty_weight)
+    # ).scalar() #get single data
+
+    # filter_data = db.query(
+    #     VehicleEntry.id,
+    #     VehicleEntry.company_name
+    # ).filter(
+    #     VehicleEntry.empty_weight >= sub_query
+    # ).order_by(
+    #     VehicleEntry.id
+    # ).all()
+
+    sub_query = db.scalars(
+        db.query(
+        Company.id
+    ).filter(
+        request.from_date <= Company.established,
+        request.to_date >= Company.established
+    )).all()
+
+    data_list = db.query(
+        Company.id,
+        Employee.id,
+        Employee.first_name,
+        Employee.last_name,
+    ).join(
+        Company,
+        Company.id == Employee.company_id
+    ).filter(
+        Company.id.in_(sub_query)
+    ).all()
+
+    result = serialize_data(data_list)
+
+    
+    return {'data': result}

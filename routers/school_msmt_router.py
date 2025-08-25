@@ -52,3 +52,8 @@ def student_result(db: Session = Depends(get_db)):
 @router.post("/vehicle-details")
 def vehicle_details(db: Session = Depends(get_db)):
     return crud.vehicle_details(db)
+
+
+@router.post("/practice")
+def practice(request: schema.SchoolDetails ,db: Session = Depends(get_db)):
+    return crud.practice(request, db)
